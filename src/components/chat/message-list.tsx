@@ -20,11 +20,11 @@ export function MessageList({
 	return (
 		<div className="flex-1 overflow-hidden">
 			<ScrollArea className="h-full" ref={scrollAreaRef}>
-				<div className="max-w-4xl mx-auto p-4">
+				<div className="max-w-4xl mx-auto p-3 sm:p-4 w-full">
 					{!hasMessages ? (
 						<EmptyState />
 					) : (
-						<div className="py-4">
+						<div className="py-3 sm:py-4">
 							{messages.map((message) => (
 								<MessageBubble key={message.id} message={message} />
 							))}

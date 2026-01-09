@@ -51,8 +51,11 @@ export function ChatInput({
 	const isButtonDisabled = status !== "ready" || !input.trim();
 
 	return (
-		<div className="border-t bg-background p-4">
-			<div className="flex gap-2 max-w-4xl mx-auto">
+		<div
+			className="border-t bg-background p-3 sm:p-4"
+			style={{ paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
+		>
+			<div className="flex gap-2 sm:gap-3 max-w-4xl mx-auto w-full">
 				<Input
 					ref={inputRef}
 					value={input}
@@ -60,13 +63,18 @@ export function ChatInput({
 					onKeyDown={handleKeyDown}
 					placeholder={INPUT_PLACEHOLDER}
 					disabled={isInputDisabled}
-					className="flex-1"
+					className="flex-1 min-w-0"
 				/>
-				<Button onClick={handleSubmit} disabled={isButtonDisabled} size="icon">
+				<Button
+					onClick={handleSubmit}
+					disabled={isButtonDisabled}
+					size="icon"
+					className="shrink-0 min-w-[44px] min-h-[44px] sm:min-w-[36px] sm:min-h-[36px]"
+				>
 					{isLoading ? (
-						<Loader2 className="size-4 animate-spin" />
+						<Loader2 className="size-4 sm:size-5 animate-spin" />
 					) : (
-						<Send className="size-4" />
+						<Send className="size-4 sm:size-5" />
 					)}
 				</Button>
 			</div>

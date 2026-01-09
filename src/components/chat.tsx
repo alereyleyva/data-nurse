@@ -11,7 +11,7 @@ export function Chat() {
 	const isLoading = status === "submitted" || status === "streaming";
 
 	return (
-		<div className="flex flex-col h-screen bg-background">
+		<div className="flex flex-col h-dvh bg-background">
 			<MessageList
 				messages={messages}
 				isLoading={isLoading}

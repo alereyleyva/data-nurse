@@ -8,13 +8,16 @@ interface MessageBubbleProps {
 
 function getBubbleStyles(isUser: boolean) {
 	return cn(
-		"max-w-[80%] rounded-2xl px-4 py-3",
+		"max-w-[85%] sm:max-w-[80%] md:max-w-[75%] rounded-2xl px-3 py-2.5 sm:px-4 sm:py-3",
 		isUser ? "bg-primary text-primary-foreground" : "bg-muted text-foreground",
 	);
 }
 
 function getContainerStyles(isUser: boolean) {
-	return cn("flex w-full mb-4", isUser ? "justify-end" : "justify-start");
+	return cn(
+		"flex w-full mb-3 sm:mb-4",
+		isUser ? "justify-end" : "justify-start",
+	);
 }
 
 export function MessageBubble({ message }: MessageBubbleProps) {
@@ -25,7 +28,7 @@ export function MessageBubble({ message }: MessageBubbleProps) {
 			<div className={getBubbleStyles(isUser)}>
 				<div
 					className={cn(
-						"text-sm prose prose-sm max-w-none",
+						"text-sm sm:text-base prose prose-sm max-w-none wrap-break-word",
 						isUser
 							? "prose-invert **:text-primary-foreground!"
 							: "dark:prose-invert **:text-foreground!",

@@ -137,3 +137,19 @@ code {
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .safe-area-inset-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+  
+  .safe-area-inset-top {
+    padding-top: env(safe-area-inset-top, 0);
+  }
+  
+  @supports (height: 100dvh) {
+    html {
+      height: -webkit-fill-available;
+    }
+  }
+}
