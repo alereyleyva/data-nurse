@@ -1,5 +1,6 @@
 import type { UIMessage } from "ai";
 import { cn } from "@/lib/utils";
+import { MemoizedMarkdown } from "./memoized-markdown";
 
 interface MessageBubbleProps {
 	message: UIMessage;
@@ -22,10 +23,23 @@ export function MessageBubble({ message }: MessageBubbleProps) {
 	return (
 		<div className={getContainerStyles(isUser)}>
 			<div className={getBubbleStyles(isUser)}>
-				<div className="text-sm whitespace-pre-wrap wrap-break-word">
+				<div
+					className={cn(
+						"text-sm prose prose-sm max-w-none",
+						isUser
+							? "prose-invert **:text-primary-foreground!"
+							: "dark:prose-invert **:text-foreground!",
+					)}
+				>
 					{message.parts.map((part) => {
 						if (part.type === "text") {
-							return <span key={part.text}>{part.text}</span>;
+							return (
+								<MemoizedMarkdown
+									key={`${message.id}-text`}
+									id={message.id}
+									content={part.text}
+								/>
+							);
 						}
 						return null;
 					})}

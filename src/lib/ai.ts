@@ -1,5 +1,5 @@
 import { createAmazonBedrock } from "@ai-sdk/amazon-bedrock";
-import { createOpenAI } from "@ai-sdk/openai";
+import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import { env } from "@/env";
 
 export type LLMProvider = "openrouter" | "bedrock";
@@ -16,9 +16,8 @@ function createOpenRouterProvider() {
 		);
 	}
 
-	return createOpenAI({
+	return createOpenRouter({
 		apiKey: env.OPENROUTER_API_KEY,
-		baseURL: "https://openrouter.ai/api/v1",
 	});
 }
 
@@ -47,12 +46,18 @@ export function getLLMProvider(provider: LLMProvider = env.LLM_PROVIDER) {
 	}
 }
 
-export function getLLMModel(provider: LLMProvider = env.LLM_PROVIDER): string {
+export function getLLMModel(provider: LLMProvider = env.LLM_PROVIDER) {
 	switch (provider) {
-		case "openrouter":
-			return env.OPENROUTER_MODEL;
-		case "bedrock":
-			return env.AWS_BEDROCK_MODEL;
+		case "openrouter": {
+			const openRouter = createOpenRouterProvider();
+
+			return openRouter.chat(env.OPENROUTER_MODEL);
+		}
+		case "bedrock": {
+			const bedrock = createBedrockProvider();
+
+			return bedrock(env.AWS_BEDROCK_MODEL);
+		}
 		default:
 			throw new Error(`Unsupported LLM provider: ${provider}`);
 	}

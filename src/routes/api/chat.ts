@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { convertToModelMessages, streamText, type UIMessage } from "ai";
-import { getLLMModel, getLLMProvider } from "@/lib/ai";
+import { getLLMModel } from "@/lib/ai";
 
 export const Route = createFileRoute("/api/chat")({
 	server: {
@@ -8,11 +8,10 @@ export const Route = createFileRoute("/api/chat")({
 			POST: async ({ request }) => {
 				const { messages }: { messages: UIMessage[] } = await request.json();
 
-				const provider = getLLMProvider();
-				const modelId = getLLMModel();
+				const model = getLLMModel();
 
 				const result = streamText({
-					model: provider(modelId),
+					model,
 					messages: await convertToModelMessages(messages),
 				});
 
