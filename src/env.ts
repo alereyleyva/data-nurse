@@ -1,6 +1,16 @@
 import { createEnv } from "@t3-oss/env-core";
 import { z } from "zod";
 
+const allowedUsersSchema = z.preprocess((val) => {
+	if (!val) return [];
+
+	if (typeof val === "string") {
+		return val.split(",");
+	}
+
+	return val;
+}, z.array(z.string()));
+
 export const env = createEnv({
 	server: {
 		LLM_PROVIDER: z.enum(["openrouter", "bedrock"]).default("openrouter"),
@@ -12,21 +22,16 @@ export const env = createEnv({
 		AWS_BEDROCK_MODEL: z
 			.string()
 			.default("anthropic.claude-3-5-sonnet-20241022-v2:0"),
+		GOOGLE_CLIENT_ID: z.string().min(1),
+		GOOGLE_CLIENT_SECRET: z.string().min(1),
+		ALLOWED_USERS: allowedUsersSchema,
 	},
 
 	/**
 	 * What object holds the environment variables at runtime. This is usually
 	 * `process.env` or `import.meta.env`.
 	 */
-	runtimeEnv: {
-		LLM_PROVIDER: process.env.LLM_PROVIDER,
-		OPENROUTER_API_KEY: process.env.OPENROUTER_API_KEY,
-		AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
-		AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
-		AWS_REGION: process.env.AWS_REGION,
-		AWS_BEDROCK_MODEL: process.env.AWS_BEDROCK_MODEL,
-		OPENROUTER_MODEL: process.env.OPENROUTER_MODEL,
-	},
+	runtimeEnv: process.env,
 
 	/**
 	 * By default, this library will feed the environment variables directly to
