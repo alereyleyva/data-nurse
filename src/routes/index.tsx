@@ -1,11 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Chat } from "@/components/chat";
 
 export const Route = createFileRoute("/")({ component: App });
 
 function App() {
-	return (
-		<div>
-			<h1>Data Nurse</h1>
-		</div>
-	);
+	return <Chat />;
 }
