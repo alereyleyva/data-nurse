@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 interface ChatInputProps {
 	onSend: (message: string) => void;
 	isLoading: boolean;
+	status?: "ready" | "submitted" | "streaming" | "error";
 }
 
 const INPUT_PLACEHOLDER = "Type your message...";
@@ -15,7 +16,11 @@ function isSubmitKey(key: string, shiftKey: boolean): boolean {
 	return key === ENTER_KEY && !shiftKey;
 }
 
-export function ChatInput({ onSend, isLoading }: ChatInputProps) {
+export function ChatInput({
+	onSend,
+	isLoading,
+	status = "ready",
+}: ChatInputProps) {
 	const [input, setInput] = useState("");
 	const inputRef = useRef<HTMLInputElement>(null);
 
@@ -42,8 +47,8 @@ export function ChatInput({ onSend, isLoading }: ChatInputProps) {
 		inputRef.current?.focus();
 	}, []);
 
-	const isInputDisabled = isLoading;
-	const isButtonDisabled = isLoading || !input.trim();
+	const isInputDisabled = status !== "ready";
+	const isButtonDisabled = status !== "ready" || !input.trim();
 
 	return (
 		<div className="border-t bg-background p-4">

@@ -1,8 +1,8 @@
+import type { UIMessage } from "ai";
 import { cn } from "@/lib/utils";
-import type { Message } from "@/types/chat";
 
 interface MessageBubbleProps {
-	message: Message;
+	message: UIMessage;
 }
 
 function getBubbleStyles(isUser: boolean) {
@@ -22,9 +22,14 @@ export function MessageBubble({ message }: MessageBubbleProps) {
 	return (
 		<div className={getContainerStyles(isUser)}>
 			<div className={getBubbleStyles(isUser)}>
-				<p className="text-sm whitespace-pre-wrap wrap-break-word">
-					{message.content}
-				</p>
+				<div className="text-sm whitespace-pre-wrap wrap-break-word">
+					{message.parts.map((part) => {
+						if (part.type === "text") {
+							return <span key={part.text}>{part.text}</span>;
+						}
+						return null;
+					})}
+				</div>
 			</div>
 		</div>
 	);

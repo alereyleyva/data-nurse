@@ -1,11 +1,11 @@
+import type { UIMessage } from "ai";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import type { Message } from "@/types/chat";
 import { EmptyState } from "./empty-state";
 import { LoadingIndicator } from "./loading-indicator";
 import { MessageBubble } from "./message-bubble";
 
 interface MessageListProps {
-	messages: Message[];
+	messages: UIMessage[];
 	isLoading: boolean;
 	scrollAreaRef: React.RefObject<HTMLDivElement | null>;
 }

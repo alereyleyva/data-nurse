@@ -1,11 +1,14 @@
+import { useChat } from "@ai-sdk/react";
 import { useAutoScroll } from "@/hooks/useAutoScroll";
-import { useChat } from "@/hooks/useChat";
 import { ChatInput } from "./chat/chat-input";
 import { MessageList } from "./chat/message-list";
 
 export function Chat() {
-	const { messages, isLoading, sendMessage } = useChat();
-	const scrollAreaRef = useAutoScroll([messages, isLoading]);
+	const { messages, status, sendMessage } = useChat();
+
+	const scrollAreaRef = useAutoScroll([messages, status]);
+
+	const isLoading = status === "submitted" || status === "streaming";
 
 	return (
 		<div className="flex flex-col h-screen bg-background">
@@ -14,7 +17,11 @@ export function Chat() {
 				isLoading={isLoading}
 				scrollAreaRef={scrollAreaRef}
 			/>
-			<ChatInput onSend={sendMessage} isLoading={isLoading} />
+			<ChatInput
+				onSend={(message) => sendMessage({ text: message })}
+				isLoading={isLoading}
+				status={status}
+			/>
 		</div>
 	);
 }
